@@ -14,3 +14,18 @@ Machine Learning API for DL models
 
 ## Endpoints
 ![title](api_spec.png)
+
+# To Run
+```bash
+# build dockerfile
+docker build -t neuralzoo .
+docker run -p 4000:80 neuralzoo
+
+# optionally, run in headless mode
+docker run -d -p 4000:80 neuralzoo
+ 
+# to stop
+docker container ls # find CONTAINER ID
+docker container stop <CONTAINER ID>
+
+```
