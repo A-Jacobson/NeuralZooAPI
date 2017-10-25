@@ -1,6 +1,12 @@
 # NeuralZooAPI
 Machine Learning API for DL models
 
+**Why make an api?** For fun! Also, many models do very well \
+on highly curated, academic datasets but fail in hilarious ways 
+when exposed to inputs from "the wild". I hope to build a simple 
+ interface ontop of this api that makes it trivial to throw wild inputs 
+ at these models on a whim.
+
 
 ## Milestones
 - [x] Dockerize
