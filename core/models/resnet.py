@@ -23,6 +23,6 @@ class ResNet18:
     def predict(self, image):
         model = self.model.eval()
         image = self.prepare_image(image)
-        preds = model(image).data
-        prob, idx = torch.max(F.softmax(preds), dim=1)
-        return prob, imagenet_classes[idx[0]]
+        out = F.softmax(model(image)).data
+        prob, preds = torch.max(out, dim=1)
+        return round(prob[0], 4), imagenet_classes[preds[0]]

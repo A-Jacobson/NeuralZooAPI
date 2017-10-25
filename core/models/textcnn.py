@@ -67,5 +67,5 @@ class TextCNNWrapper:
         out = F.softmax(self.model(vectorized_text)).data
         print(out)
         prob, pred = torch.max(out, dim=1)
-        return round(prob[0], 2), self.class_map[pred[0]]
+        return round(prob[0], 4), self.class_map[pred[0]]
 

@@ -15,14 +15,43 @@ Machine Learning API for DL models
 - [ ] CoNLL Entity Detection
 - [ ] Amazon Reviews Sentiment Analysis
 - [ ] Word2Vec
+- [ ] Faster-RCNN
+- [ ] Mask-RCNN
 
 ## Endpoints
-- Disclaimer: super resolution and depth in the wild still more training.
-
 ![api structure](figures/api_structure.png)
 
 ## Examples
-![api example](figures/example.png)
+### Subjective/Objective Sentence Classification
+![sentence example](figures/example.png)
+
+## Image Classification
+Image           |  Prediction
+:-------------------------:|:-------------------------:
+![im](figures/sloth.jpg)  |  ![im](figures/imagenet_example.png)
+
+## Neural Style Transfer
+Udnie Sloth           |  Starry Night Sloth 
+:-------------------------:|:-------------------------:|
+![im](figures/sloth_udnie.png)| ![im](figures/sloth_starry.png)
+
+## Super Resolution
+- warning, needs more training to generalize, takes small (~72px) images only.
+
+Low Resolution Input          |  4x Super Resolution 
+:-------------------------:|:-------------------------:|
+![im](figures/low_res_bird.jpg)| ![im](figures/output_bird.jpg)
+
+## Depth Map Prediction from sparse labels
+- warning, only trained on indoor scenes.
+
+ RGB Input          |  Depth Map
+:-------------------------:|:-------------------------:|
+![im](figures/diw_input.jpg)| ![im](figures/diw_output.jpg)
+
+
+
+
 
 
 # To Run

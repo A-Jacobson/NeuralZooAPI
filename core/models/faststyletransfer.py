@@ -109,7 +109,8 @@ class StyleTransfer:
 
     @staticmethod
     def prepare_image(image):
-        data_transforms = transforms.Compose([transforms.ToTensor(),
+        data_transforms = transforms.Compose([transforms.Scale(320),
+                                              transforms.ToTensor(),
                                               normalize_imagenet()])
         return Variable(data_transforms(image).unsqueeze(dim=0))
 

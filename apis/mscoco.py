@@ -24,7 +24,7 @@ class StyleTransferStarryTransform(Resource):
         return serve_pil_image(styled_img)
 
 
-@api.route('/styletransfer_undie/transform')
+@api.route('/styletransfer_udnie/transform')
 @api.expect(upload_parser)
 class StyleTransferUndieTransform(Resource):
     def post(self):
@@ -32,6 +32,6 @@ class StyleTransferUndieTransform(Resource):
         args = upload_parser.parse_args()
         uploaded_file = args['image']
         image = Image.open(uploaded_file.stream)
-        st = StyleTransfer('undie')
+        st = StyleTransfer('udnie')
         styled_img = st.transform(image)
         return serve_pil_image(styled_img)
