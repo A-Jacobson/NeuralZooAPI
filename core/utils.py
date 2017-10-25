@@ -1,4 +1,38 @@
-convert_imagenet = {0: 'tench, Tinca tinca',
+from io import BytesIO
+
+import torch
+from flask import send_file
+from torchvision import transforms
+
+
+def serve_pil_image(pil_img):
+    img_io = BytesIO()
+    pil_img.save(img_io, 'PNG', quality=70)
+    img_io.seek(0)
+    return send_file(img_io, mimetype='image/png')
+
+
+def normalize_imagenet():
+    return transforms.Normalize(mean=[0.485, 0.456, 0.406],
+                                std=[0.229, 0.224, 0.225])
+
+
+def recover_imagenet(tensor):
+    mean, std = [0.485, 0.456, 0.406], [0.229, 0.224, 0.225]
+    mu = torch.Tensor(mean).view(-1, 1, 1)
+    sigma = torch.Tensor(std).view(-1, 1, 1)
+    return tensor_to_img((tensor * sigma + mu).clamp(0, 1))
+
+
+def tensor_to_img(tensor):
+    return transforms.ToPILImage()(tensor)
+
+
+def min_max_scale(tensor):
+    return (tensor - tensor.min()) / (tensor.max() - tensor.min())  # min/max scaling
+
+
+imagenet_classes = {0: 'tench, Tinca tinca',
                     1: 'goldfish, Carassius auratus',
                     2: 'great white shark, white shark, man-eater, man-eating shark, Carcharodon carcharias',
                     3: 'tiger shark, Galeocerdo cuvieri',
