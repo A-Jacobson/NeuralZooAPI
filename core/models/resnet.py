@@ -1,7 +1,8 @@
 from torchvision.models import resnet18
 from torchvision import transforms
 from torch.autograd import Variable
-from core.utils import convert_imagenet
+from core.utils import imagenet_classes, normalize_imagenet
+import torch.nn.functional as F
 import torch
 
 
@@ -15,8 +16,7 @@ class ResNet18:
             transforms.Scale(224),
             transforms.CenterCrop(224),
             transforms.ToTensor(),
-            transforms.Normalize([0.485, 0.456, 0.406],
-                                 [0.229, 0.224, 0.225])
+            normalize_imagenet()
         ])
         return Variable(data_transforms(image).unsqueeze(dim=0))
 
@@ -24,5 +24,5 @@ class ResNet18:
         model = self.model.eval()
         image = self.prepare_image(image)
         preds = model(image).data
-        _, idx = torch.max(preds, dim=1)
-        return convert_imagenet[idx[0]]
+        _, idx = torch.max(F.softmax(preds), dim=1)
+        return imagenet_classes[idx[0]]
