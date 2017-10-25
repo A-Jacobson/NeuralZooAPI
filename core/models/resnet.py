@@ -24,5 +24,5 @@ class ResNet18:
         model = self.model.eval()
         image = self.prepare_image(image)
         preds = model(image).data
-        _, idx = torch.max(F.softmax(preds), dim=1)
-        return imagenet_classes[idx[0]]
+        prob, idx = torch.max(F.softmax(preds), dim=1)
+        return prob, imagenet_classes[idx[0]]

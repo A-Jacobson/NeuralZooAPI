@@ -20,8 +20,8 @@ class ResNet18Classify(Resource):
         uploaded_file = args['image']  # This is FileStorage instance
         image = Image.open(uploaded_file.stream)
         resnet18 = ResNet18()
-        prediction = resnet18.predict(image)
-        return prediction
+        probability, prediction = resnet18.predict(image)
+        return dict(probability=probability, prediction=prediction)
 
 
 @api.route('/superresolutionCL/transform')
@@ -34,6 +34,5 @@ class SuperResolutionCLTransform(Resource):
         image = Image.open(uploaded_file.stream)
         sr = SuperResolutionCL()
         hi_res = sr.transform(image)
-        print(type(hi_res))
         return serve_pil_image(hi_res)
 
