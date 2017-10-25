@@ -5,6 +5,8 @@ Machine Learning API for DL models
 ## Milestones
 - [x] Dockerize
 - [x] Deploy to AWS
+- [ ] TESTS
+- [ ] TravisCI
 - [x] Example endpoint with torchvision models
 - [x] Depth in the Wild
 - [x] Super Resolution
