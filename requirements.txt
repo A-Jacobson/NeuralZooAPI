@@ -1,5 +1,6 @@
 flask_restplus==0.10.1
-Flask==0.12.2
 numpy==1.12.1
-Werkzeug==0.12.2
+Flask==0.12.2
+Werkzeug==0.13
+Flask_Cors==3.0.3
 Pillow==4.3.0

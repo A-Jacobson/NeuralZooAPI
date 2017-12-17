@@ -13,7 +13,7 @@ class ResNet18:
     @staticmethod
     def prepare_image(image):
         data_transforms = transforms.Compose([
-            transforms.Scale(224),
+            transforms.Resize(224),
             transforms.CenterCrop(224),
             transforms.ToTensor(),
             normalize_imagenet()
@@ -23,6 +23,6 @@ class ResNet18:
     def predict(self, image):
         model = self.model.eval()
         image = self.prepare_image(image)
-        out = F.softmax(model(image)).data
+        out = F.softmax(model(image), dim=-1).data
         prob, preds = torch.max(out, dim=1)
         return round(prob[0], 4), imagenet_classes[preds[0]]

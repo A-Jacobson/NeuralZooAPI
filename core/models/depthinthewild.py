@@ -1,8 +1,9 @@
 import torch
-from torch import nn
 import torch.nn.functional as F
-from torchvision import transforms
+from torch import nn
 from torch.autograd import Variable
+from torchvision import transforms
+
 from core.utils import min_max_scale, tensor_to_img
 
 
@@ -22,7 +23,6 @@ class InceptionS(nn.Module):
     """
     1x1, 3x3, 5x5, 7x7 size filters
     """
-
     def __init__(self, in_channels, out_channels):
         super(InceptionS, self).__init__()
         # same padding = (kernel size - 1) / 2
@@ -54,7 +54,6 @@ class InceptionL(nn.Module):
     """
     1x1, 3x3, 7x7, 11x11 size filters
     """
-
     def __init__(self, in_channels, out_channels):
         super(InceptionL, self).__init__()
         out_channels = int(out_channels / 4)
@@ -98,7 +97,7 @@ class HourGlass(nn.Module):
         self.I = nn.Conv2d(64, 1, 3, padding=1)
 
     def forward(self, x):
-        x = self.batch_norm(x) # hack to normalize input (paper didn't mention mean centering?)
+        x = self.batch_norm(x)  # hack to normalize input (paper didn't mention mean centering?)
         x = self.H(x)  # 128, 240, 320
         channel_1 = self.A(x)  # 64, 240, 320
 
@@ -154,12 +153,14 @@ class HourGlass(nn.Module):
 class DepthInTheWild:
     def __init__(self):
         self.model = HourGlass()
-        checkpoint = torch.load('core/models/state_dicts/hourglass_310.pth.tar')
+        checkpoint = torch.load('core/models/state_dicts/hourglass_310.pth.tar',
+                                lambda storage, loc: storage)
         self.model.load_state_dict(checkpoint['model_state'])
 
     @staticmethod
     def prepare_image(image):
-        data_transforms = transforms.Compose([transforms.Scale((320, 240)), transforms.ToTensor()])
+        data_transforms = transforms.Compose([transforms.Resize((320, 240)),
+                                              transforms.ToTensor()])
         return Variable(data_transforms(image).unsqueeze(dim=0))
 
     def tranform(self, image):

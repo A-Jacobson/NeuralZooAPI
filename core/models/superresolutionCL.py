@@ -73,12 +73,12 @@ class JohnsonSR(nn.Module):
 class SuperResolutionCL:
     def __init__(self):
         self.model = JohnsonSR()
-        checkpoint = torch.load('core/models/state_dicts/johnson_pl_bn_11.pth.tar')
+        checkpoint = torch.load('core/models/state_dicts/johnson_pl_bn_11.pth.tar', lambda storage, loc: storage)
         self.model.load_state_dict(checkpoint['model_state'])
 
     @staticmethod
     def prepare_image(image):
-        data_transforms = transforms.Compose([transforms.Scale(72),
+        data_transforms = transforms.Compose([transforms.Resize(72),
                                               transforms.ToTensor(),
                                               normalize_imagenet()])
         return Variable(data_transforms(image).unsqueeze(dim=0))

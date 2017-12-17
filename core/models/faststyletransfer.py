@@ -1,9 +1,10 @@
 import numpy as np
+import torch
 import torch.nn.functional as F
 from torch import nn
-import torch
-from torchvision import transforms
 from torch.autograd import Variable
+from torchvision import transforms
+
 from core.utils import normalize_imagenet, recover_imagenet
 
 
@@ -102,14 +103,16 @@ class StyleTransfer:
     def __init__(self, style):
         self.model = FastStyleTransfer()
         if style is 'starry':
-            checkpoint = torch.load('core/models/state_dicts/ST_Epoch17_COCOS_Starry.pth.tar')
+            checkpoint = torch.load('core/models/state_dicts/ST_Epoch17_COCOS_Starry.pth.tar',
+                                    lambda storage, loc: storage)
         else:
-            checkpoint = torch.load('core/models/state_dicts/ST2_Epoch1_COCO_undie.pth.tar')
+            checkpoint = torch.load('core/models/state_dicts/ST2_Epoch1_COCO_undie.pth.tar',
+                                    lambda storage, loc: storage)
         self.model.load_state_dict(checkpoint['model_state'])
 
     @staticmethod
     def prepare_image(image):
-        data_transforms = transforms.Compose([transforms.Scale(320),
+        data_transforms = transforms.Compose([transforms.Resize(320),
                                               transforms.ToTensor(),
                                               normalize_imagenet()])
         return Variable(data_transforms(image).unsqueeze(dim=0))
@@ -119,5 +122,3 @@ class StyleTransfer:
         image = self.prepare_image(image)
         hi_res_image = model(image).data.squeeze(0)
         return recover_imagenet(hi_res_image)
-
-

@@ -50,7 +50,7 @@ class TextCNN(nn.Module):
 class TextCNNWrapper:
     def __init__(self):
         self.class_map = ('subjective', 'objective')
-        checkpoint = torch.load('core/models/state_dicts/TextCNN_5epoch_glove.pth.tar')
+        checkpoint = torch.load('core/models/state_dicts/TextCNN_5epoch_glove.pth.tar', lambda storage, loc: storage)
         self.vectorizer = IndexVectorizer(min_frequency=4, maxlen=104)
         self.vectorizer.build_from_vocabulary(checkpoint['vectorizer_state'])
         self.model = TextCNN(4233, 50, 104)
@@ -64,8 +64,7 @@ class TextCNNWrapper:
 
     def classify(self, text):
         vectorized_text = self.prepare_text(text)
-        out = F.softmax(self.model(vectorized_text)).data
-        print(out)
+        out = F.softmax(self.model(vectorized_text), dim=-1).data
         prob, pred = torch.max(out, dim=1)
         return round(prob[0], 4), self.class_map[pred[0]]
 
